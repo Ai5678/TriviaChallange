@@ -1,35 +1,42 @@
 "use client"
 import {useEffect, useState} from "react";
+import Question from "./question";
 
-export default function Trivia(){
 
-    const [triviaQuestion, setTriviaQuestion] = useState(null);
+export default function Trivia({finishTrivia}) {
+
+    const [triviaQuestions, setTriviaQuestions] = useState([]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); 
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [currentPoints, setCurrentPoints] = useState(0);
     const [allPossibleAnswers, setAllPossibleAnswers] = useState([]);
-    
-    async function combineAllAnswers(incorrectAnswers, correct) {
-        let allAnswers = [...incorrectAnswers, correct];
-        allAnswers.sort(() => Math.random() - 0.5);
-        setAllPossibleAnswers(allAnswers);
-    }
 
     async function getTriviaData(){
         try {
-            const response = await fetch("https://opentdb.com/api.php?amount=3&type=multiple"
-            );
-            const data = await response.json();
+            const response = await fetch("https://opentdb.com/api.php?amount=3");
             if(!response.ok){
-                console.log(`Error: ${response.statusText}`);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const results = data.results[0];
-            setTriviaQuestion(results);
-            setCorrectAnswer(results.correct_answer);
-            combineAllAnswers(results.incorrect_answers, results.correct_answer);
+            const data = await response.json();
+
+            if (data.results.length > 0){
+                setTriviaQuestions(data.results);
+                setCurrentQuestionIndex(0);
+                setQuestionAndAnswers(data.results[0]);
+            } else {
+                throw new Error("No trivia questions available");
+            }
         } catch (error) {
             console.log(`Error: ${error.message}`)
         }
     }
+    
+    function setQuestionAndAnswers(question) {
+        setCorrectAnswer(question.correct_answer);
+        const allAnswers = [...question.incorrect_answers, question.correct_answer];
+        setAllPossibleAnswers(allAnswers.sort(() => Math.random() - 0.5));
+    }
+        
     useEffect(() => {
         getTriviaData();
     }, []);
@@ -37,39 +44,43 @@ export default function Trivia(){
     function verifyAnswer(selectedAnswer) {
         if (selectedAnswer === correctAnswer){
             setCurrentPoints(currentPoints + 1);
-            getTriviaData();
+        } 
+
+        const nextIndex = currentQuestionIndex + 1;
+        if (nextIndex < triviaQuestions.length) {
+            setCurrentQuestionIndex(nextIndex);
+            setQuestionAndAnswers(triviaQuestions[nextIndex]);
         } else{
-            getTriviaData();
+            finishTrivia(currentPoints);
         }
     }
 
-    function removeCharacters(question) {
-        return question
+    function removeCharacters(text) {
+        return text
             .replace(/(&quot\;)/g, "\"")
             .replace(/(&rsquo\;)/g, "'")
             .replace(/(&#039\;)/g, "'")
             .replace(/(&amp\;)/g, "&");
     }
 
-    if (!triviaQuestion) return <p>Loading...</p>;
+    if (triviaQuestions.length === 0) return <p>Loading...</p>;
+    const currentQuestion = triviaQuestions[currentQuestionIndex];
 
     return(
-        <div>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-amber-50">
             <header>
-                <div>
-                    <div>Current Points: {currentPoints}</div>
-                    <br />
-                    <div>
-                        <div>{removeCharacters(triviaQuestion.question)}</div>
-                        <br />
-                        <div>
-                            {allPossibleAnswers.map((answer, index) => (
-                                <button key={index} onClick={() => verifyAnswer(answer)}>
-                                    {removeCharacters(answer)}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                <div className="text-center text-2xl font-bold py-5">Current Points: {currentPoints}</div>
+                <div className="grid grid-cols-2 gap-4 py-5">
+                    <div className="text-left text-lg font-medium">Difficulty: {currentQuestion.difficulty}</div>
+                    <div className="text-right text-lg font-medium">Category: {removeCharacters(currentQuestion.category)}</div>
+                </div>
+                <div className="flex items-center justify-center">
+                    <Question questionObj={{
+                        question: currentQuestion.question,
+                        allPossibleAnswers: allPossibleAnswers,
+                        verifyAnswer: verifyAnswer,
+                        removeCharacters: removeCharacters
+                    }}/>
                 </div>
             </header>
         </div>

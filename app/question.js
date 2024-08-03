@@ -1,5 +1,24 @@
 
-
 export default function Question({questionObj}){
-    
+    const {
+        question,
+        allPossibleAnswers,
+        verifyAnswer,
+        removeCharacters 
+    } = questionObj;
+
+    return(
+        <div className="p-4 max-w-xl mx-auto bg-amber-50 rounded-lg shadow-lg">
+            <div className="mb-4 text-lg font-bold text-gray-900">
+                {removeCharacters(question)}
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-lg text-gray-900">
+                {allPossibleAnswers.map((answer, index) => (
+                    <button key={index} onClick={() => verifyAnswer(answer)} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-110">
+                        {removeCharacters(answer)}
+                    </button>
+                ))}
+            </div>
+        </div>
+    )
 }
