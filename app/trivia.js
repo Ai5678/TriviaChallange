@@ -67,8 +67,8 @@ export default function Trivia({finishTrivia}) {
     const currentQuestion = triviaQuestions[currentQuestionIndex];
 
     return(
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-amber-50">
-            <header>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-amber-50 p-5">
+            <header className="text-center max-w-4xl">
                 <div className="text-center text-2xl font-bold py-5">Current Points: {currentPoints}</div>
                 <div className="grid grid-cols-2 gap-4 py-5">
                     <div className="text-left text-lg font-medium">Difficulty: {currentQuestion.difficulty}</div>
