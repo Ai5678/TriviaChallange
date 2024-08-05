@@ -14,12 +14,12 @@ export default function Greeting({ startTrivia, setSelectedCategory, categories 
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Welcome to Trivia Challenge!</h1>
 
       {/* Select Category Dropdown */}
-      <div className="mx-14 mt-4 mb-20">
+      <div className="mt-4 mb-20 w-full max-w-xs mx-auto">
         <select
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="bg-amber-50 text-purple-500 font-bold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg"
+          className="w-full bg-amber-50 text-purple-500 font-bold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg"
         >
           <option value="">Any Category</option>
           {categories.map((cat) => (
