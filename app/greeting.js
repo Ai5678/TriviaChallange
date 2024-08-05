@@ -14,7 +14,7 @@ export default function Greeting({ startTrivia, setSelectedCategory, categories 
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Welcome to Trivia Challenge!</h1>
 
       {/* Select Category Dropdown */}
-      <div className="mx-4 mt-4 mb-20">
+      <div className="mx-14 mt-4 mb-20">
         <select
           id="category"
           value={category}
