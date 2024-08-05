@@ -10,6 +10,8 @@ export default function Trivia({finishTrivia}) {
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [currentPoints, setCurrentPoints] = useState(0);
     const [allPossibleAnswers, setAllPossibleAnswers] = useState([]);
+    const [selectedAnswer, setSelectedAnswer] = useState("");
+    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
 
     async function getTriviaData(){
         try {
@@ -35,6 +37,8 @@ export default function Trivia({finishTrivia}) {
         setCorrectAnswer(question.correct_answer);
         const allAnswers = [...question.incorrect_answers, question.correct_answer];
         setAllPossibleAnswers(allAnswers.sort(() => Math.random() - 0.5));
+        setSelectedAnswer("");
+        setShowCorrectAnswer(false);
     }
         
     useEffect(() => {
@@ -42,12 +46,17 @@ export default function Trivia({finishTrivia}) {
     }, []);
 
     function verifyAnswer(selectedAnswer) {
+        setSelectedAnswer(selectedAnswer);
         if (selectedAnswer === correctAnswer){
             setCurrentPoints(currentPoints + 1);
+        } else{
+            setShowCorrectAnswer(true);
         } 
+    }
 
+    function nextQuestion(){
         const nextIndex = currentQuestionIndex + 1;
-        if (nextIndex < triviaQuestions.length) {
+        if(nextIndex < triviaQuestions.length){
             setCurrentQuestionIndex(nextIndex);
             setQuestionAndAnswers(triviaQuestions[nextIndex]);
         } else{
@@ -79,9 +88,20 @@ export default function Trivia({finishTrivia}) {
                         question: currentQuestion.question,
                         allPossibleAnswers: allPossibleAnswers,
                         verifyAnswer: verifyAnswer,
-                        removeCharacters: removeCharacters
+                        removeCharacters: removeCharacters,
+                        selectedAnswer: selectedAnswer,
+                        correctAnswer: correctAnswer,
+                        showCorrectAnswer: showCorrectAnswer
                     }}/>
                 </div>
+                {selectedAnswer && (
+                    <button 
+                        onClick={nextQuestion}
+                        className="bg-amber-50 text-purple-500 font-bold mt-5 px-4 md:py-3 md:px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-110"
+                    >
+                        Next Question
+                    </button>
+                )}
             </header>
         </div>
     );
