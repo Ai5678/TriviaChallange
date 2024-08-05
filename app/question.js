@@ -17,7 +17,7 @@ export default function Question({questionObj}){
             </div>
             <div className="grid grid-cols-2 gap-4 text-lg text-gray-900">
                 {allPossibleAnswers.map((answer, index) => (
-                    <button key={index} onClick={() => verifyAnswer(answer)} className={`bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-110 ${
+                    <button key={index} onClick={() => verifyAnswer(answer)} className={`bg-purple-500 hover:bg-purple-700 text-amber-50 font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-110 ${
                         selectedAnswer && selectedAnswer === answer ? selectedAnswer === correctAnswer ? "bg-green-500" : "bg-red-500" : ""
                     }`} 
                     disabled={!!selectedAnswer}>

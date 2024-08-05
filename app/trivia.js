@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import Question from "./question";
 
 
-export default function Trivia({finishTrivia}) {
+export default function Trivia({finishTrivia, category}) {
 
     const [triviaQuestions, setTriviaQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); 
@@ -15,7 +15,7 @@ export default function Trivia({finishTrivia}) {
 
     async function getTriviaData(){
         try {
-            const response = await fetch("https://opentdb.com/api.php?amount=3");
+            const response = await fetch(`https://opentdb.com/api.php?amount=3&category=${category}`);
             if(!response.ok){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -43,7 +43,7 @@ export default function Trivia({finishTrivia}) {
         
     useEffect(() => {
         getTriviaData();
-    }, []);
+    }, [category]);
 
     function verifyAnswer(selectedAnswer) {
         setSelectedAnswer(selectedAnswer);
