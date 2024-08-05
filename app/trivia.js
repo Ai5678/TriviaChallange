@@ -69,7 +69,8 @@ export default function Trivia({finishTrivia}) {
             .replace(/(&quot\;)/g, "\"")
             .replace(/(&rsquo\;)/g, "'")
             .replace(/(&#039\;)/g, "'")
-            .replace(/(&amp\;)/g, "&");
+            .replace(/(&amp\;)/g, "&")
+            .replace(/(&ouml\;)/g, "Ö");
     }
 
     if (triviaQuestions.length === 0) return <p>Loading...</p>;
@@ -97,7 +98,7 @@ export default function Trivia({finishTrivia}) {
                 {selectedAnswer && (
                     <button 
                         onClick={nextQuestion}
-                        className="bg-amber-50 text-purple-500 font-bold mt-4 px-4 py-2 md:py-3 md:px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-110"
+                        className="bg-amber-50 text-purple-500 font-bold mt-4 px-4 py-2 md:py-4 md:px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-110"
                     >
                         Next Question
                     </button>
