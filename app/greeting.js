@@ -10,11 +10,11 @@ export default function Greeting({ startTrivia, setSelectedCategory, categories 
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
+    <div className="text-center flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4">
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Welcome to Trivia Challenge!</h1>
 
       {/* Select Category Dropdown */}
-      <div className="mt-4 mb-20">
+      <div className="px-4 mt-4 mb-20">
         <select
           id="category"
           value={category}
