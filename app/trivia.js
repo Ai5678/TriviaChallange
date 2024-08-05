@@ -15,7 +15,7 @@ export default function Trivia({finishTrivia, category}) {
 
     async function getTriviaData(){
         try {
-            const response = await fetch(`https://opentdb.com/api.php?amount=3&category=${category}`);
+            const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${category}`);
             if(!response.ok){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
