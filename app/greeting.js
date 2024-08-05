@@ -19,7 +19,7 @@ export default function Greeting({ startTrivia, setSelectedCategory, categories 
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="bg-amber-50 text-purple-500 font-bold mx-4 py-2 px-4 rounded-lg shadow-lg"
+          className="bg-amber-50 text-purple-500 font-bold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg"
         >
           <option value="">Any Category</option>
           {categories.map((cat) => (
